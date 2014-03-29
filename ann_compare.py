@@ -1,5 +1,4 @@
 import glob
-import imp
 import time
 import copy
 import os
@@ -18,12 +17,16 @@ def translate_digits(digits):
 
 def load(filename):
     data = np.genfromtxt(filename)
-    input = data[:, 1:-2]
+    input = data[:, 0:-1]
     return input / 100.0, translate_digits(data[:,-1])
 
 
-def load_benchmarks():
-    benchmarks = glob.glob("bench_*.py")
+def load_benchmarks(network_files=""):
+    print network_files
+    if network_files == "":
+        benchmarks = glob.glob("bench_*.py")
+    else:
+        benchmarks = glob.glob(network_files)
     bench_modules = []
     pwd = os.path.dirname(__file__)
     for bench in benchmarks:
@@ -51,15 +54,25 @@ def evaluation(before_train, after_train, after_test, output, expected):
     right = np.sum(same)
     print("Accuracy: {}".format(right / n_of_samples))
 
-train_input, train_target = load('pendigits-training.txt')
-test_input, test_target = load('pendigits-testing.txt')
 
-benchmarks = load_benchmarks()
+def run_benchmark():
+    # if set only specfic file gets tested
+    specific_network ="bench_ffnet.py"
 
-for benchmark in benchmarks:
-    before_train = time.time()
-    net = benchmark.train(train_input, train_target)
-    after_train = time.time()
-    predicted = benchmark.test(net, test_input)
-    after_test = time.time()
-    evaluation(before_train, after_train, after_test, predicted, test_target)
+    # Load testingset
+    train_input, train_target = load('pendigits-training.txt')
+    test_input, test_target = load('pendigits-testing.txt')
+
+
+    benchmarks = load_benchmarks(specific_network)
+
+    for benchmark in benchmarks:
+        before_train = time.time()
+        net = benchmark.train(train_input, train_target)
+        after_train = time.time()
+        predicted = benchmark.test(net, test_input)
+        after_test = time.time()
+        evaluation(before_train, after_train, after_test, predicted, test_target)
+
+if __name__ == '__main__':
+    run_benchmark()

@@ -1,6 +1,6 @@
 import numpy as np
-import neurolab as nl
 
+import neurolab as nl
 
 def train(input, target):
     n_samples = len(input)
