@@ -63,8 +63,10 @@ def run_benchmark():
     train_input, train_target = load('pendigits-training.txt')
     test_input, test_target = load('pendigits-testing.txt')
 
-
-    benchmarks = load_benchmarks(specific_network)
+    if 'specific_network' in locals():
+        benchmarks = load_benchmarks(specific_network)
+    else :
+        benchmarks = load_benchmarks()
 
     for benchmark in benchmarks:
         before_train = time.time()
