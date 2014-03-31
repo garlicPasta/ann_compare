@@ -1,5 +1,5 @@
+neurolab==0.3.3
+numpy==1.8.0
 networkx==1.8.1
 ffnet==0.7.1
-neurolab==0.3.3
-numpy==1.8.1
 scipy==0.13.3

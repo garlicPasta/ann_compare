@@ -6,4 +6,5 @@ fi
 
 source .env/bin/activate
 
-pip install -r requirements.txt
+pip2 install numpy==1.8.0
+pip2 install -r requirements.txt
